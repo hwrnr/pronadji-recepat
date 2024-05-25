@@ -1,0 +1,11 @@
+FROM coady/pylucene
+
+# Install dependencies
+WORKDIR /app
+RUN python3 -m venv /app/venv
+COPY requirements.txt  /app/requirements.txt
+
+RUN bash -c ". venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
+
+# Copy the source code
+CMD [ "bash", "-c", "cd /app && source venv/bin/activate && python main.py"]
