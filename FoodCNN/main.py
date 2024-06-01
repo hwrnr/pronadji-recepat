@@ -4,18 +4,38 @@ import base64
 from PIL import Image
 from io import BytesIO
 from flask_cors import CORS
+from tensorflow.keras.preprocessing import image as krsimg
+import tensorflow as tf
+from tensorflow import keras
+import numpy as np
+import json
 
 app = Flask(__name__)
 CORS(app)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000 # 16 MB
 
+with open('FoodCNN/labels', 'r') as file:
+    labels = json.load(file)
+
+
+model = keras.saving.load_model("FoodCNN/Model/bestmodel-2")
+
 def recognize_image(image) -> str:
     # Convert image to pillow image
     image = Image.open(BytesIO(base64.b64decode(image)))
+    image.reshape((224, 224))
+    img_array = krsimg.img_to_array(image)
+    img_array = np.expand_dims(img_array, axis=0)
 
-    # Ovde treba da se pozove model za prepoznavanje slike
+    prediction = model.predict(img_array)
+    prediction = tf.nn.softmax(prediction).numpy()
+    top_indices = np.argsort(prediction[0])[::-1][:5]
+    top_classes = [index for index in top_indices]
+    classes = []
+    for i in top_classes:
+        classes.append(labels[i])
 
-    return 'krofna'
+    return classes[0]
 
 @app.route('/recognizeImage', methods=['POST'])
 def recognize_image_api():
