@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   Image,
+  FlatList,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -53,6 +54,74 @@ const recepies: Array<Receipe> = [
     name: "Apple",
     info: "Apple is a good source of fiber",
   },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
+  {
+    name: "Apple",
+    info: "Apple is a good source of fiber",
+  },
 ];
 
 const ReceipeCard = ({ receipe }: { receipe: Receipe }) => {
@@ -92,7 +161,7 @@ function App() {
     const manipulateResult = await manipulateAsync(
       result.assets[0].uri,
       [{ resize: { width: 300 } }],
-      { format: SaveFormat.PNG } // from 0 to 1 "1 for best quality"
+      { format: SaveFormat.JPEG } // from 0 to 1 "1 for best quality"
     );
 
     setImage(manipulateResult.base64 ?? "");
@@ -126,23 +195,24 @@ function App() {
             <Ionicons name="camera" size={30} color="#000" />
           </Pressable>
         </View>
-        <View>
+        <View style={styles.recepicesContainer}>
           {image ? (
             <Image
               source={{ uri: "data:image/jpeg;base64," + image }}
               style={{
                 width: "100%",
-                height: 300,
+                aspectRatio: "4/3",
                 marginHorizontal: "auto",
               }}
               resizeMode="cover"
             />
           ) : null}
-        </View>
-        <View style={styles.recepicesContainer}>
-          {recepies.map((receipe, index) => (
-            <ReceipeCard key={index} receipe={receipe} />
-          ))}
+          <FlatList
+            data={recepies}
+            renderItem={({ item }) => <ReceipeCard receipe={item} />}
+            keyExtractor={(item, index) => index.toString()}
+            style={{ flex: 1 }}
+          />
         </View>
       </View>
     </NavigationContainer>
