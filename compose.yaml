@@ -3,6 +3,10 @@ services:
     build:
       context: ./FoodCNN
 
+  pretrazivko:
+    build:
+      context: ./pretrazivko
+
   nginx:
     image: nginx
     ports:
@@ -14,3 +18,4 @@ services:
         read_only: true
     depends_on:
       - foodcnn
+      - pretrazivko
