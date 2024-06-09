@@ -54,6 +54,7 @@ function App() {
   }, [data]);
 
   const getImage = (f: any) => async () => {
+    setImage("");
     let result = await f({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       cameraType: ImagePicker.CameraType.back,
