@@ -1,6 +1,5 @@
-import re
-
 from flask import Flask, jsonify
+from flask import Flask, jsonify, g
 from flask_cors import CORS
 
 from RecipeSearcher import RecipeSearcher
@@ -8,12 +7,19 @@ from RecipeSearcher import RecipeSearcher
 app = Flask(__name__)
 CORS(app)
 
-recipeSearcher = RecipeSearcher("./recipes_index")
+@app.before_request
+def before_first_request():
+    g.recipeSearcher = RecipeSearcher("./recipes_index")
+
+@app.after_request
+def after_request(response):
+    if 'recipeSearcher' in g:
+        g.recipeSearcher.finishSearching()
+    return response
 
 @app.route('/search/<query>')
 def search(query):
-
-    recipes = recipeSearcher.search(query)
+    recipes = g.recipeSearcher.search(query)
     res = []
 
     for r in recipes:
@@ -28,7 +34,7 @@ def search(query):
 
 @app.route('/recipe/<id>')
 def recipe(id):
-    r = recipeSearcher.searchID(id)
+    r = g.recipeSearcher.searchID(id)
     return jsonify({
         "id": r.id,
         "title": r.title,

@@ -11,6 +11,8 @@ from org.apache.lucene.queryparser.classic import MultiFieldQueryParser
 
 class RecipeSearcher():
     def __init__(self, indexDirPath):
+        vm_env = lucene.getVMEnv()
+        vm_env.attachCurrentThread()
 
         self.indexReader = DirectoryReader.open(FSDirectory.open(File(indexDirPath).toPath()))
 
