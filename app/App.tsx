@@ -29,115 +29,33 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import useRecognizeImage from "./query/useRecognizeImage";
+import useSearchRecipes from "./query/useSearchRecipes";
+import Receipe from "./types/Receipe";
 
 const queryClient = new QueryClient();
-
-type Receipe = {
-  name: string;
-  info: string;
-};
-
-const recepies: Array<Receipe> = [
-  {
-    name: "Egg",
-    info: "Egg is a good source of protein",
-  },
-  {
-    name: "Bread",
-    info: "Bread is a good source of carbohydrate",
-  },
-  {
-    name: "Milk",
-    info: "Milk is a good source of calcium",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-  {
-    name: "Apple",
-    info: "Apple is a good source of fiber",
-  },
-];
 
 const ReceipeCard = ({ receipe }: { receipe: Receipe }) => {
   return (
     <View style={styles.receipeCard}>
-      <Text style={styles.h1}>{receipe.name}</Text>
-      <Text>{receipe.info}</Text>
+      <Text style={styles.h1}>{receipe.title}</Text>
+      <Text style={styles.h4}>Ingredients</Text>
+      {receipe.ingredients
+        .split("\n")
+        .slice(0, 3)
+        .map((ingredient, index) => (
+          <Text key={index}>- {ingredient}</Text>
+        ))}
+      <Text>...</Text>
     </View>
   );
 };
 
 function App() {
   const [image, setImage] = useState<string>("");
-  const { data } = useRecognizeImage(image);
-
   const [searchText, setSearchText] = useState<string>("");
+
+  const { data } = useRecognizeImage(image);
+  const { data: recepies } = useSearchRecipes(searchText);
 
   useEffect(() => {
     if (data) {
@@ -196,7 +114,7 @@ function App() {
           </Pressable>
         </View>
         <View style={styles.recepicesContainer}>
-          {image ? (
+          {/*image ? (
             <Image
               source={{ uri: "data:image/jpeg;base64," + image }}
               style={{
@@ -206,11 +124,11 @@ function App() {
               }}
               resizeMode="cover"
             />
-          ) : null}
+          ) : null*/}
           <FlatList
             data={recepies}
             renderItem={({ item }) => <ReceipeCard receipe={item} />}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(_, index) => index.toString()}
             style={{ flex: 1 }}
           />
         </View>
@@ -253,9 +171,16 @@ const styles = StyleSheet.create({
   receipeCard: {
     padding: 10,
     margin: 10,
+    backgroundColor: "#ddd",
+    borderRadius: 5,
   },
   h1: {
     fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  h4: {
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
   },
