@@ -50,3 +50,5 @@ if __name__ == '__main__':
     for r in rs.search("chocolate donut"):
         print(r)
     rs.finishSearching()
+else:
+    lucene.initVM(vmargs=['-Djava.awt.headless=true'])
