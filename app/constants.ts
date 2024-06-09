@@ -1,5 +1,6 @@
-// const API_URL = "http://192.168.113.9:5000/";
+import { Platform } from "react-native";
+
 // const API_URL = "http://localhost:8080/";
-const API_URL = "http://192.168.1.26:8080/";
+const API_URL = Platform.OS == "web" ? "" : "http://localhost:8080/"; // Empty so browser will know to use the same domain as the one that served the page
 
 export { API_URL };

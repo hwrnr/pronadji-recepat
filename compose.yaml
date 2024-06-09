@@ -8,7 +8,8 @@ services:
       context: ./pretrazivko
 
   nginx:
-    image: nginx
+    build:
+      context: ./app
     ports:
       - "8080:80"
     volumes:
