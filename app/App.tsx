@@ -1,33 +1,23 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 import {
+  FlatList,
+  Image,
   Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   View,
-  Image,
-  FlatList,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 import * as ImagePicker from "expo-image-picker";
 
 import { NavigationContainer } from "@react-navigation/native";
+import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import { useEffect, useState } from "react";
-import {
-  ImageResult,
-  manipulateAsync,
-  SaveFormat,
-} from "expo-image-manipulator";
 
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import useRecognizeImage from "./query/useRecognizeImage";
 import useSearchRecipes from "./query/useSearchRecipes";
 import Receipe from "./types/Receipe";
@@ -79,10 +69,10 @@ function App() {
     const manipulateResult = await manipulateAsync(
       result.assets[0].uri,
       [{ resize: { width: 300 } }],
-      { format: SaveFormat.JPEG } // from 0 to 1 "1 for best quality"
+      { format: SaveFormat.JPEG, compress: 1 } // from 0 to 1 "1 for best quality"
     );
 
-    setImage(manipulateResult.base64 ?? "");
+    setImage(manipulateResult.base64 ?? manipulateResult.uri ?? "");
   };
 
   const pickImage = getImage(ImagePicker.launchImageLibraryAsync);
@@ -114,9 +104,13 @@ function App() {
           </Pressable>
         </View>
         <View style={styles.recepicesContainer}>
-          {/*image ? (
+          {image ? (
             <Image
-              source={{ uri: "data:image/jpeg;base64," + image }}
+              source={{
+                uri: image.startsWith("file:///")
+                  ? image
+                  : "data:image/jpeg;base64," + image,
+              }}
               style={{
                 width: "100%",
                 aspectRatio: "4/3",
@@ -124,7 +118,7 @@ function App() {
               }}
               resizeMode="cover"
             />
-          ) : null*/}
+          ) : null}
           <FlatList
             data={recepies}
             renderItem={({ item }) => <ReceipeCard receipe={item} />}

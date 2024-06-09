@@ -39,11 +39,13 @@ def recognize_image(image) -> str:
 
 @app.route('/recognizeImage', methods=['POST'])
 def recognize_image_api():
-    if 'image' not in request.form:
+    json_data = request.get_json()
+
+    if 'image' not in json_data:
         print('Not jupi')
         return jsonify({'error': 'No image provided'}), 400
 
-    image = request.form['image']
+    image = json_data['image']
 
     if not image:
         return jsonify({'error': 'No image provided'}), 400
