@@ -32,8 +32,7 @@ class RecipeSearcher():
             return r
 
     def search(self, query):
-        print("radi")
-        q = self.queryParser.parse([query, query], ["title", "NER"], self.analyzer)
+        q = self.queryParser.parse([query + '~', query + '~'], ["title", "NER"], self.analyzer)
         print(q)
         results = self.indexSearcher.search(q, 10) #ovo je malo fuj sto je 10
         hits = results.scoreDocs
@@ -57,9 +56,9 @@ if __name__ == '__main__':
     print('lucene', lucene.VERSION)
 
     rs = RecipeSearcher("./recipes_index")
-    # for r in rs.search("chocolate donut"):
-    #    print(r)
-    print(rs.searchID("33"))
+    for r in rs.search("chescake"):
+       print(r)
+    # print(rs.searchID("33"))
     rs.finishSearching()
 else:
     lucene.initVM(vmargs=['-Djava.awt.headless=true'])
