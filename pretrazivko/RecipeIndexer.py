@@ -8,8 +8,7 @@ import csv
 from org.apache.lucene.analysis.standard import StandardAnalyzer, StandardTokenizer
 from org.apache.lucene.index import IndexWriterConfig, IndexWriter
 from org.apache.lucene.store import FSDirectory
-from org.apache.lucene.document import Document, TextField, StoredField, Field
-
+from org.apache.lucene.document import Document, TextField, StoredField, Field, IntField
 
 class RecipeIndexer():
     def __init__(self, indexDirPath, createNewIndex=False):
@@ -43,11 +42,11 @@ class RecipeIndexer():
     def indexRecipe(self, id, title, ingredients, directions, NER):
         doc = Document()
 
+        doc.add(TextField("id", id, Field.Store.YES))
         doc.add(TextField("title", title, Field.Store.YES))
         doc.add(TextField("NER", NER, Field.Store.NO))
         doc.add(StoredField("ingredients", ingredients))
         doc.add(StoredField("directions", directions))
-        doc.add(StoredField("id", id))
 
         self.indexer.addDocument(doc)
 

@@ -1,3 +1,5 @@
+import re
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 
@@ -26,12 +28,13 @@ def search(query):
 
 @app.route('/recipe/<id>')
 def recipe(id):
-    # TODO: Implement get recipe functionality
+    r = recipeSearcher.searchID(id)
     return jsonify({
-        "id": id,
-        "title": 'The Great Gatsby',
-        "description": 'The Great Gatsby is a novel written by American author F. Scott Fitzgerald that follows a cast of characters living in the fictional towns of West Egg and East Egg on prosperous Long Island in the summer of 1922.',
-        })
+        "id": r.id,
+        "title": r.title,
+        "ingredients": r.ingredients,
+        "directions": r.directions
+    })
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
