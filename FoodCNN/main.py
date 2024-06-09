@@ -54,4 +54,4 @@ def recognize_image_api():
     return jsonify({'tag': tag}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, port=int(environ.get('PORT', 5000)), host='0.0.0.0')
+    app.run(debug=False, port=int(environ.get('PORT', 5000)), host='0.0.0.0')
