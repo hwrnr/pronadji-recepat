@@ -16,15 +16,15 @@ import { useEffect, useState } from "react";
 
 import useRecognizeImage from "../query/useRecognizeImage";
 import useSearchRecipes from "../query/useSearchRecipes";
-import Receipe from "../types/Receipe";
+import Recipe from "../types/Recipe";
 import { Link } from "expo-router";
 
-const ReceipeCard = ({ receipe }: { receipe: Receipe }) => {
+const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
-    <Link href={`/receipe/${receipe.id}`} style={styles.receipeCard}>
-      <Text style={styles.h1}>{receipe.title}</Text>
+    <Link href={`/recipe/${recipe.id}`} style={styles.recipeCard}>
+      <Text style={styles.h1}>{recipe.title}</Text>
       <Text style={styles.h4}>Ingredients</Text>
-      {receipe.ingredients
+      {recipe.ingredients
         .split("\n")
         .slice(0, 3)
         .map((ingredient, index) => (
@@ -117,7 +117,7 @@ export default function App() {
         ) : null}
         <FlatList
           data={recepies}
-          renderItem={({ item }) => <ReceipeCard receipe={item} />}
+          renderItem={({ item }) => <RecipeCard recipe={item} />}
           keyExtractor={(_, index) => index.toString()}
           style={{ flex: 1 }}
         />
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   recepicesContainer: {
     flex: 1,
   },
-  receipeCard: {
+  recipeCard: {
     padding: 10,
     margin: 10,
     backgroundColor: "#ddd",

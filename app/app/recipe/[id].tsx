@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
-import useReceipe from "../../query/useReceipe";
+import useRecipe from "../../query/useRecipe";
 
 export default () => {
   const { id } = useLocalSearchParams();
@@ -9,7 +9,7 @@ export default () => {
     return <Text>Missing id</Text>;
   }
 
-  const { data } = useReceipe(id);
+  const { data } = useRecipe(id);
 
   if (!data) {
     return <Text>Loading...</Text>;

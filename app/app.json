@@ -10,7 +10,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your photos to let you find receipes.",
+          "photosPermission": "The app accesses your photos to let you find recipes.",
           "cameraPermission": "The app accesses your camera to let you take photos of food."
         }
       ],
