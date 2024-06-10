@@ -13,14 +13,13 @@ import {
 
 import * as ImagePicker from "expo-image-picker";
 
-import { NavigationContainer } from "@react-navigation/native";
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import { useEffect, useState } from "react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import useRecognizeImage from "./query/useRecognizeImage";
-import useSearchRecipes from "./query/useSearchRecipes";
-import Receipe from "./types/Receipe";
+import Receipe from "../types/Receipe";
+import useRecognizeImage from "../query/useRecognizeImage";
+import useSearchRecipes from "../query/useSearchRecipes";
 
 const queryClient = new QueryClient();
 
@@ -80,55 +79,53 @@ function App() {
   const takeImage = getImage(ImagePicker.launchCameraAsync);
 
   return (
-    <NavigationContainer>
-      <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={30} color="#000" />
-          <TextInput
-            style={{
-              height: 40,
-              paddingHorizontal: 10,
-              flex: 1,
-              fontSize: 16,
-            }}
-            value={searchText}
-            onChangeText={setSearchText}
-            inlineImageLeft="search"
-            placeholder="What do you want to cook today?"
-            placeholderTextColor="gray"
-          />
-          <Pressable onPress={pickImage}>
-            <Ionicons name="image" size={30} color="#000" />
-          </Pressable>
-          <Pressable onPress={takeImage}>
-            <Ionicons name="camera" size={30} color="#000" />
-          </Pressable>
-        </View>
-        <View style={styles.recepicesContainer}>
-          {image ? (
-            <Image
-              source={{
-                uri: image.startsWith("file:///")
-                  ? image
-                  : "data:image/jpeg;base64," + image,
-              }}
-              style={{
-                width: "100%",
-                aspectRatio: "4/3",
-                marginHorizontal: "auto",
-              }}
-              resizeMode="cover"
-            />
-          ) : null}
-          <FlatList
-            data={recepies}
-            renderItem={({ item }) => <ReceipeCard receipe={item} />}
-            keyExtractor={(_, index) => index.toString()}
-            style={{ flex: 1 }}
-          />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <Ionicons name="search" size={30} color="#000" />
+        <TextInput
+          style={{
+            height: 40,
+            paddingHorizontal: 10,
+            flex: 1,
+            fontSize: 16,
+          }}
+          value={searchText}
+          onChangeText={setSearchText}
+          inlineImageLeft="search"
+          placeholder="What do you want to cook today?"
+          placeholderTextColor="gray"
+        />
+        <Pressable onPress={pickImage}>
+          <Ionicons name="image" size={30} color="#000" />
+        </Pressable>
+        <Pressable onPress={takeImage}>
+          <Ionicons name="camera" size={30} color="#000" />
+        </Pressable>
       </View>
-    </NavigationContainer>
+      <View style={styles.recepicesContainer}>
+        {image ? (
+          <Image
+            source={{
+              uri: image.startsWith("file:///")
+                ? image
+                : "data:image/jpeg;base64," + image,
+            }}
+            style={{
+              width: "100%",
+              aspectRatio: "4/3",
+              marginHorizontal: "auto",
+            }}
+            resizeMode="cover"
+          />
+        ) : null}
+        <FlatList
+          data={recepies}
+          renderItem={({ item }) => <ReceipeCard receipe={item} />}
+          keyExtractor={(_, index) => index.toString()}
+          style={{ flex: 1 }}
+        />
+      </View>
+    </View>
   );
 }
 

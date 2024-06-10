@@ -13,7 +13,8 @@
           "photosPermission": "The app accesses your photos to let you find receipes.",
           "cameraPermission": "The app accesses your camera to let you take photos of food."
         }
-      ]
+      ],
+      "expo-router"
     ],
     "splash": {
       "image": "./assets/splash.png",
@@ -30,8 +31,8 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "output": "static"
     }
   }
 }
