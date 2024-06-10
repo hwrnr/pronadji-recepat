@@ -1,10 +1,8 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { StatusBar } from "expo-status-bar";
 import {
   FlatList,
   Image,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -16,16 +14,14 @@ import * as ImagePicker from "expo-image-picker";
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import { useEffect, useState } from "react";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Receipe from "../types/Receipe";
 import useRecognizeImage from "../query/useRecognizeImage";
 import useSearchRecipes from "../query/useSearchRecipes";
-
-const queryClient = new QueryClient();
+import Receipe from "../types/Receipe";
+import { Link } from "expo-router";
 
 const ReceipeCard = ({ receipe }: { receipe: Receipe }) => {
   return (
-    <View style={styles.receipeCard}>
+    <Link href={`/receipe/${receipe.id}`} style={styles.receipeCard}>
       <Text style={styles.h1}>{receipe.title}</Text>
       <Text style={styles.h4}>Ingredients</Text>
       {receipe.ingredients
@@ -35,11 +31,11 @@ const ReceipeCard = ({ receipe }: { receipe: Receipe }) => {
           <Text key={index}>- {ingredient}</Text>
         ))}
       <Text>...</Text>
-    </View>
+    </Link>
   );
 };
 
-function App() {
+export default function App() {
   const [image, setImage] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
 
@@ -114,6 +110,7 @@ function App() {
               width: "100%",
               aspectRatio: "4/3",
               marginHorizontal: "auto",
+              maxWidth: 500,
             }}
             resizeMode="cover"
           />
@@ -128,19 +125,6 @@ function App() {
     </View>
   );
 }
-
-export default function Wrapper() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <App />
-        <StatusBar style="auto" translucent={false} />
-      </SafeAreaView>
-    </QueryClientProvider>
-  );
-}
-
-// TODO: Fix invisible status bar
 
 const styles = StyleSheet.create({
   container: {
@@ -165,6 +149,8 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: "#ddd",
     borderRadius: 5,
+    display: "flex",
+    flexDirection: "column",
   },
   h1: {
     fontSize: 20,
