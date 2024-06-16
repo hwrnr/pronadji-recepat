@@ -2,6 +2,8 @@
 
 ## How to run
 
+Download csv file from [https://www.kaggle.com/datasets/paultimothymooney/recipenlg](https://www.kaggle.com/datasets/paultimothymooney/recipenlg) and place it in the `pretrazivko/res` folder.
+
 Install `docker` and `docker compose` on your machine.
 
 Run the following command:
